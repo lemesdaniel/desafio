@@ -1,0 +1,11 @@
+version: '3.5'
+services:
+  php:
+    container_name: desafio-php
+    image: desafio/php
+    environment:
+      - ENVIRONMENT=development
+    build: ./
+    volumes:
+      - ./:/var/www/html
+

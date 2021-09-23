@@ -1,0 +1,23 @@
+{
+    "authors": [
+        {
+            "name": "Daniel Lemes",
+            "email": "dlemesdev@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Challenge\\": "src/",
+            "Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "php": "7.4.*"
+    },
+    "require-dev": {
+        "pestphp/pest": "^1.19",
+        "phpunit/phpunit": "^9.5",
+        "infection/infection": "^0.25.2",
+        "pestphp/pest-plugin-parallel": "^0.3.1"
+    }
+}
