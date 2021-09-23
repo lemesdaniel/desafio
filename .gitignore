@@ -2,4 +2,4 @@
 .vscode
 .phpunit.result.cache
 vendor
-tests/report
+tests/reports
