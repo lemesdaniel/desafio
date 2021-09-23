@@ -13,6 +13,5 @@ class User
     private string $name;
     private Email $email;
     private HashPasswordInterface $password;
-
-
+    
 }

@@ -12,7 +12,8 @@
         }
     },
     "require": {
-        "php": "7.4.*"
+        "php": "7.4.*",
+        "bcosca/fatfree-core": "^3.7"
     },
     "require-dev": {
         "pestphp/pest": "^1.19",

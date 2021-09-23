@@ -1,4 +1,4 @@
-version: '3.5'
+version: '3.7'
 services:
   php:
     container_name: desafio-php
@@ -6,6 +6,9 @@ services:
     environment:
       - ENVIRONMENT=development
     build: ./
+    ports:
+      - "9000:9000"
+    command: php -S 0.0.0.0:9000 -t public/
     volumes:
       - ./:/var/www/html
 
