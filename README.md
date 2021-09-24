@@ -1,4 +1,4 @@
-###Instruções
+### Instruções
 
 O projeto usa docker e banco de dados sqlite, para fins de simplicidade não foi implantado o um servidor web e o projeto roda com o servidor built-in do php na porta 9000
 
