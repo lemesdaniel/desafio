@@ -1,12 +1,30 @@
 <?php
+declare(strict_types=1);
+
+use Challenge\Infrastructure\Http\User\UserController;
+use Challenge\Infrastructure\Repositories\UserRepositorySqlite;
+use PlugRoute\Http\Request;
+use PlugRoute\Http\Response;
+
 require '../vendor/autoload.php';
+$db = new PDO("sqlite:../database/desafio.sqlite");
+$db->setAttribute(PDO::ATTR_ERRMODE,
+    PDO::ERRMODE_EXCEPTION);
+$route = \PlugRoute\RouteFactory::create();
 
-$f3 = \Base::instance();
-$f3->set('DB', new DB\SQL('sqlite:../database/desafio.sqlite'));
+$route->get('/', function (Response $response) {
+    return $response->setStatusCode(200)
+        ->json(['data' => 'Bem vindo ao desafio!!']);
+});
 
-$f3->route('GET /',
-    function() {
-        echo 'Hello, world!';
+$route->post('/user', function (Request $request, Response $response) use ($db) {
+    try {
+        (new UserController(new UserRepositorySqlite($db)))->store($request->all());
+        return $response->setStatusCode(201)->json([]);
+    } catch (Exception $exception) {
+        return $response->setStatusCode(201)->json(['error_message' => $exception->getMessage()]);
     }
-);
-$f3->run();
+});
+
+
+$route->on();
