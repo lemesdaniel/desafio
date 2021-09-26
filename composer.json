@@ -15,16 +15,27 @@
         "php": "7.4.*",
         "ext-json": "*",
         "zircote/swagger-php": "^3.2",
-        "erandir/plug-route": "^4.3",
-        "nyholm/psr7": "^1.4",
+        "ext-pdo": "*",
+        "league/route": "^5.1",
+        "guzzlehttp/psr7": "^2.0",
         "laminas/laminas-httphandlerrunner": "^2.1",
-        "narrowspark/http-emitter": "^1.0",
-        "ext-pdo": "*"
+        "league/container": "^4.1",
+        "laminas/laminas-diactoros": "^2.8",
+        "gridonic/json-response": "^1.1",
+        "pecee/simple-router": "4.3.7.2",
+        "symfony/routing": "^5.3"
     },
     "require-dev": {
         "pestphp/pest": "^1.19",
         "phpunit/phpunit": "^9.5",
         "infection/infection": "^0.25.2",
-        "pestphp/pest-plugin-parallel": "^0.3.1"
+        "pestphp/pest-plugin-parallel": "^0.3.1",
+        "infection/codeception-adapter": "^0.4.0",
+        "mockery/mockery": "^1.4"
+    },
+    "extra": {
+        "infection": {
+            "class": "Infection\\TestFramework\\Codeception\\CodeceptionAdapterFactory"
+        }
     }
 }
