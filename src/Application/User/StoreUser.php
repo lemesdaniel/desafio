@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Challenge\Application\User;
+namespace App\Application\User;
 
-use Challenge\Domain\Contracts\UserRepository;
-use Challenge\Domain\Entities\User;
+use App\Domain\Contracts\UserRepository;
+use App\Domain\Entities\User;
 
 class StoreUser
 {
@@ -19,11 +19,22 @@ class StoreUser
     }
 
     /**
-     * @param UserDto $user
+     * @param UserDto $userDto
+     * @return array
      */
-    public function execute(UserDto $user): void
+    public function execute(UserDto $userDto): array
     {
-        $user = (new User())->create($user->name, $user->email, $user->document, $user->password);
-        $this->repository->save($user);
+        $user = (new User())->create($userDto->name, $userDto->email, $userDto->document, $userDto->password);
+        return  $this->repository->save($user);
+    }
+
+    /**
+     * @param UserDto $user
+     * @return array
+     */
+    public function load(UserDto $user): array
+    {
+        $userDto = (new User())->load($user->id, $user->name, $user->email, $user->document);
+        return  $this->repository->save($userDto);
     }
 }

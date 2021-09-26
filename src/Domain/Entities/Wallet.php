@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Challenge\Domain\Entities;
+namespace App\Domain\Entities;
 
 class Wallet
 {

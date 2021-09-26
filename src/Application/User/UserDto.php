@@ -1,10 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Challenge\Application\User;
+namespace App\Application\User;
 
 class UserDto
 {
+    public string $id;
     public string $document;
     public string $name;
     public string $email;

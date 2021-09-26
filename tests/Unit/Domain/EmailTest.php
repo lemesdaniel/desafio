@@ -1,7 +1,7 @@
 <?php
 
-use Challenge\Domain\Email;
-use Psr\Log\InvalidArgumentException;
+
+use App\Domain\Email;
 
 test("Verifica se o email é inválido", function (){
     $email = new Email('dlemesdev@gmail');

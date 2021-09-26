@@ -1,9 +1,25 @@
 <?php
 
-namespace Challenge\Domain\Contracts;
+namespace App\Domain\Contracts;
+
+use App\Domain\Entities\User;
 
 interface TransactionRepository
 {
+    /**
+     * @param User $payer
+     * @param User $payee
+     * @param float $value
+     */
     public function __construct(User $payer, User $payee, float $value);
-    public function __invoke();
+
+    /**
+     * @return bool
+     */
+    public function validateTransaction():bool;
+
+    /**
+     * @return mixed
+     */
+    public function execute();
 }

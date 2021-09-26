@@ -1,13 +1,28 @@
 <?php
 declare(strict_types=1);
 
-namespace Challenge\Domain\Contracts;
+namespace App\Domain\Contracts;
 
-use Challenge\Domain\Document;
-use Challenge\Domain\Entities\User;
+use App\Domain\Document;
+use App\Domain\Entities\User;
 
 interface UserRepository
 {
-    public function save(User $user): void;
-    public function findByDocument(string $document): User;
+    /**
+     * @param User $user
+     * @return array
+     */
+    public function save(User $user): array;
+
+    /**
+     * @param string $document
+     * @return array
+     */
+    public function findByDocument(string $document): array;
+
+    /**
+     * @param int $id
+     * @return array
+     */
+    public function find(int $id): array;
 }

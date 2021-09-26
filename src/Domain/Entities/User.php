@@ -1,14 +1,18 @@
 <?php
 declare(strict_types=1);
 
-namespace Challenge\Domain\Entities;
+namespace App\Domain\Entities;
 
-use Challenge\Domain\Contracts\HashPasswordInterface;
-use Challenge\Domain\Document;
-use Challenge\Domain\Email;
+use App\Domain\Contracts\HashPasswordInterface;
+use App\Domain\Document;
+use App\Domain\Email;
 
 class User
 {
+    /**
+     * @var string
+     */
+    private string $id;
     /**
      * @var Document
      */
@@ -24,7 +28,7 @@ class User
     /**
      * @var string
      */
-    private string $password;
+    private string $password = '';
 
     /**
      * @param string $name
@@ -88,7 +92,7 @@ class User
      */
     public function getDocument(): string
     {
-        return (string) $this->document;
+        return (string)$this->document;
     }
 
     /**
@@ -104,7 +108,7 @@ class User
      */
     public function getEmail(): string
     {
-        return (string) $this->email;
+        return (string)$this->email;
     }
 
     /**
@@ -121,23 +125,41 @@ class User
      * @param $document
      * @return $this
      */
-    public function load($name, $email, $document): User
+    public function load($id, $name, $email, $document): User
     {
         $this->setName($name)
+            ->setId($id)
             ->setDocument($document)
             ->setEmail($email);
 
         return $this;
     }
 
-    public function __serialize(): array
+    public function toArray(): array
     {
         return [
-            $this->getName(),
-            $this->getDocument(),
-            $this->getEmail(),
-            $this->getPassword()
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'document' => $this->getDocument(),
+            'email' => $this->getEmail(),
         ];
+    }
+
+    /**
+     * @param $id
+     */
+    public function setId($id): User
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getId(): string
+    {
+        return $this->id;
     }
 
 }

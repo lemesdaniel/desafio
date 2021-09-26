@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Challenge\Domain;
+namespace App\Domain;
 
 use Psr\Log\InvalidArgumentException;
 

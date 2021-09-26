@@ -1,6 +1,7 @@
 <?php
 
-use Challenge\Infrastructure\HashPassword;
+
+use App\Infrastructure\HashPassword;
 
 test('Verifica se as senhas combinam', function(){
     $password = new HashPassword();
