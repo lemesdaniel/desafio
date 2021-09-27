@@ -11,7 +11,7 @@ class ErrorController extends BaseController
     public function show(FlattenException $exception, DebugLoggerInterface $logger = null): \Symfony\Component\HttpFoundation\JsonResponse
     {
         return $this->json([
-            "code" => $exception->getStatusCode(),
+            "code" => $exception->getCode(),
             "message" => $exception->getMessage()
         ]);
     }

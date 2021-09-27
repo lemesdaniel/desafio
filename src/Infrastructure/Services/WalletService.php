@@ -53,6 +53,12 @@ class WalletService
         return (bool) $this->userRepository->find($id);
     }
 
+    /**
+     * @param $data
+     * @return array
+     * @throws \Doctrine\DBAL\Driver\Exception
+     * @throws \Doctrine\DBAL\Exception
+     */
     public function getBalance($data): array
     {
         $user = $this->userExists((int) $data->user_id);

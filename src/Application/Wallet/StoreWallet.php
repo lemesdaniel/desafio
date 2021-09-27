@@ -28,7 +28,7 @@ class StoreWallet
     public function execute(WalletDto $walletDto): array
     {
         $wallet = (new Wallet())->create($walletDto->user_id, $walletDto->balance);
-        return  $this->repository->addFunds($wallet);
+        return  $this->repository->cashIn($wallet);
     }
 
     public function getBalance(WalletDto $walletDto)

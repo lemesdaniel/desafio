@@ -44,10 +44,25 @@ class WalletRepositorySqlite implements WalletRepository
      * @throws \Doctrine\DBAL\Exception
      * @throws \Doctrine\DBAL\Driver\Exception
      */
-    public function addFunds(Wallet $wallet): array
+    public function cashIn(Wallet $wallet): array
     {
         $this->checkIfExistsWallet($wallet);
         $sql = 'UPDATE wallets SET balance=balance+:value WHERE user_id = :user_id';
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindValue('value', $wallet->getBalance());
+        $stmt->bindValue('user_id', $wallet->getUserId());
+        $stmt->executeQuery();
+        return $this->getBalance($wallet->getUserId());
+    }
+
+    /**
+     * @throws \Doctrine\DBAL\Driver\Exception
+     * @throws \Doctrine\DBAL\Exception
+     */
+    public function cashOut(Wallet $wallet): array
+    {
+        $this->checkIfExistsWallet($wallet);
+        $sql = 'UPDATE wallets SET balance=balance-:value WHERE user_id = :user_id';
         $stmt = $this->connection->prepare($sql);
         $stmt->bindValue('value', $wallet->getBalance());
         $stmt->bindValue('user_id', $wallet->getUserId());

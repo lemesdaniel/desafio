@@ -6,20 +6,10 @@ use App\Domain\Entities\User;
 
 interface TransactionRepository
 {
-    /**
-     * @param User $payer
-     * @param User $payee
-     * @param float $value
-     */
-    public function __construct(User $payer, User $payee, float $value);
 
-    /**
-     * @return bool
-     */
-    public function validateTransaction():bool;
 
     /**
      * @return mixed
      */
-    public function execute();
+    public function execute(int $payer_id, int $payee_id, float $value);
 }
