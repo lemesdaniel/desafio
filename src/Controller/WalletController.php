@@ -24,6 +24,7 @@ class WalletController extends BaseController
      * @Route("/wallet", methods={"POST"})
      * @param Request $request
      * @return JsonResponse
+     * @throws \Exception
      */
     public function addFound(Request $request): JsonResponse
     {
@@ -33,6 +34,22 @@ class WalletController extends BaseController
         return $this->json(
             (new WalletService($repository, $userRepository)
             )->execute($data));
+    }
+
+    /**
+     * @Route("/wallet", methods={"GET"})
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @throws \Exception
+     */
+    public function getBalance(Request $request): JsonResponse
+    {
+        $data = $this->getJsonData($request);
+        $repository = new WalletRepositorySqlite($this->connection);
+        $userRepository = new UserRepositorySqlite($this->connection);
+        return $this->json(
+            (new WalletService($repository, $userRepository)
+            )->getBalance($data));
     }
 
 }

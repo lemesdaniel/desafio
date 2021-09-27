@@ -31,9 +31,10 @@ class StoreWallet
         return  $this->repository->addFunds($wallet);
     }
 
-    public function load()
+    public function getBalance(WalletDto $walletDto)
     {
-        
+        $wallet = (new Wallet())->create($walletDto->user_id, $walletDto->balance);
+        return  $this->repository->getBalance($wallet->getUserId());
     }
 
 }

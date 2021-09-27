@@ -37,17 +37,30 @@ class WalletService
         if(!$user){
             throw new \Exception("Usuário não existe");
         }
-        $wallet = new WalletDto($data->user_id, $data->value);
+        $wallet = new WalletDto($data->user_id, (float) $data->value);
         return (new StoreWallet($this->repository))->execute($wallet);
 
     }
 
     /**
+     * @param $id
      * @return bool
+     * @throws \Doctrine\DBAL\Driver\Exception
+     * @throws \Doctrine\DBAL\Exception
      */
     public function userExists($id): bool
     {
-
         return (bool) $this->userRepository->find($id);
+    }
+
+    public function getBalance($data): array
+    {
+        $user = $this->userExists((int) $data->user_id);
+        if(!$user){
+            throw new \Exception("Usuário não existe");
+        }
+        $wallet = new WalletDto($data->user_id, 0.0);
+        return (new StoreWallet($this->repository))->getBalance($wallet);
+
     }
 }
