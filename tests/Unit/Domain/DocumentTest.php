@@ -1,7 +1,5 @@
 <?php
-
-use Challenge\Domain\Document;
-use Psr\Log\InvalidArgumentException;
+use App\Domain\Document;
 
 test("Verifica se o CPF/CNPJ é válido", function($cpf){
     $document = new Document($cpf);

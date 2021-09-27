@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace Challenge\Infrastructure;
+namespace App\Infrastructure;
 
-use Challenge\Domain\Contracts\HashPasswordInterface;
+use App\Domain\Contracts\HashPasswordInterface;
 
 class HashPassword implements HashPasswordInterface
 {

@@ -2,4 +2,7 @@
 .vscode
 .phpunit.result.cache
 vendor
+var/cache
+var/log
 tests/reports
+phpunit.xml.dist

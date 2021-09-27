@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Challenge\Domain;
+namespace App\Domain;
 
 use Psr\Log\InvalidArgumentException;
 
@@ -9,6 +9,9 @@ class Document
 {
     private string $document;
 
+    /**
+     * @param string $document
+     */
     public function __construct(string $document)
     {
         $this->setDocument($document)
@@ -17,12 +20,19 @@ class Document
             ->validDocument();
     }
 
+    /**
+     * @param $document
+     * @return $this
+     */
     private function setDocument($document): self
     {
         $this->document = $document;
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     private function checkIfHasOnlyOneCharacter(): self
     {
         if(count(array_count_values(str_split($this->document))) == 1){
@@ -31,12 +41,18 @@ class Document
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     private function sanitize(): self
     {
         $this->document = preg_replace('/[^0-9]/', '', $this->document);
         return $this;
     }
 
+    /**
+     * @return bool
+     */
     public function validDocument(): bool
     {
         $size = strlen($this->document);
@@ -51,6 +67,9 @@ class Document
         return $this->cnpjIsValid();
     }
 
+    /**
+     * @return bool
+     */
     private function cpfIsValid(): bool
     {
         for ($t = 9; $t < 11; $t++) {
@@ -65,6 +84,9 @@ class Document
         return true;
     }
 
+    /**
+     * @return bool
+     */
     private function cnpjIsValid(): bool
     {
         $b = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
@@ -79,6 +101,9 @@ class Document
         return true;
     }
 
+    /**
+     * @return string
+     */
     public function __toString(): string
     {
         return $this->document;
