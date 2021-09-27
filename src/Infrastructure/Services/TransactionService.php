@@ -112,4 +112,9 @@ class TransactionService
         $this->repository->execute((int) $this->payer['id'], (int) $this->payee['id'], $this->value);
     }
 
+    private function authorizingService(){
+        $httpClient = HttpClient::create();
+        $response = $httpClient->request('GET', 'https://api.github.com/repos/symfony/symfony-docs');
+    }
+
 }
