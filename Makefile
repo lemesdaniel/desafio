@@ -9,7 +9,7 @@ phpunit:
 pest:
 	@docker exec desafio-php vendor/bin/pest --parallel --coverage --coverage-html tests/reports/coverage/
 infection:
-	@docker exec desafio-php vendor/bin/infection
+	@docker exec desafio-php vendor/bin/infection --test-framework=pest --show-mutations
 composer-install:
 	@docker exec  desafio-php composer install
 composer-update:

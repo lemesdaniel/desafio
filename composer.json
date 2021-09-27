@@ -38,12 +38,12 @@
     "symfony/yaml": "5.3.*"
   },
   "require-dev": {
-    "pestphp/pest": "^1.19",
-    "phpunit/phpunit": "^9.5",
-    "infection/infection": "^0.25.2",
-    "pestphp/pest-plugin-parallel": "^0.3.1",
     "infection/codeception-adapter": "^0.4.0",
-    "mockery/mockery": "^1.4"
+    "infection/infection": "^0.25.2",
+    "mockery/mockery": "^1.4",
+    "pestphp/pest": "^1.19",
+    "pestphp/pest-plugin-parallel": "^0.3.1",
+    "phpunit/phpunit": "^9.5"
   },
   "config": {
     "optimize-autoloader": true,

@@ -21,7 +21,7 @@ test(
         ];
         $transaction->execute((object)$data);
     }
-)->expectExceptionMessage('Usuário pagador não foi encontrado');
+)->expectExceptionCode(422)->expectExceptionMessage('Usuário pagador não foi encontrado');
 
 
 test(
@@ -49,7 +49,7 @@ test(
         ];
         $transaction->execute((object)$data);
     }
-)->expectExceptionMessage('Usuário beneficiário não foi encontrado');
+)->expectExceptionCode(422)->expectExceptionMessage('Usuário beneficiário não foi encontrado');
 
 
 test(
@@ -82,7 +82,7 @@ test(
         ];
         $transaction->execute((object)$data);
     }
-)->expectExceptionMessage('Lojistas podem apenas receber transferências, não podem fazer');
+)->expectExceptionCode(422)->expectExceptionMessage('Lojistas podem apenas receber transferências, não podem fazer');
 
 
 test(
@@ -119,5 +119,5 @@ test(
     -1,
     0,
     -150
-])->expectExceptionMessage('Valor da transação precisa ser maior que zero.');
+])->expectExceptionCode(422)->expectExceptionMessage('Valor da transação precisa ser maior que zero.');
 
