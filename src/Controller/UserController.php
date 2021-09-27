@@ -4,15 +4,11 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Infrastructure\Services\UserService;
+use App\Domain\Exception\UserService;
 use App\Infrastructure\Repositories\sqlite\UserRepositorySqlite;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Constraints\Collection;
-use Symfony\Component\Validator\Constraints\Email;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Type;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class UserController extends BaseController
@@ -25,8 +21,6 @@ class UserController extends BaseController
     public function store(Request $request, ValidatorInterface $validator): JsonResponse
     {
         $data = $this->getJsonData($request);
-        //$errors = $validator->validate($request,$this->validate());
-
         $repository = new UserRepositorySqlite($this->connection);
         return $this->json(
             (new UserService($repository)
@@ -47,24 +41,4 @@ class UserController extends BaseController
 
         return $this->json($resultData);
     }
-
-    /**
-     * @return \Symfony\Component\Validator\Constraints\Collection
-     */
-    private function validate(): Collection
-    {
-        return new Collection([
-            "name" => new NotBlank(),
-            "document" => new NotBlank(),
-            "email" => [
-                new NotBlank(),
-                new Email()
-            ],
-            "password" => [
-                new NotBlank(),
-                new Type(['type' => 'string'])
-            ]
-        ]);
-    }
-
 }

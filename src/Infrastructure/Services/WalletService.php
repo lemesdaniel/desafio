@@ -8,6 +8,7 @@ use App\Application\Wallet\StoreWallet;
 use App\Application\Wallet\WalletDto;
 use App\Infrastructure\Repositories\sqlite\UserRepositorySqlite;
 use App\Infrastructure\Repositories\sqlite\WalletRepositorySqlite;
+use Exception;
 
 class WalletService
 {
@@ -16,7 +17,7 @@ class WalletService
      */
     private WalletRepositorySqlite $repository;
     /**
-     * @var \App\Infrastructure\Repositories\sqlite\UserRepositorySqlite
+     * @var UserRepositorySqlite
      */
     private UserRepositorySqlite $userRepository;
 
@@ -30,13 +31,14 @@ class WalletService
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
+     * @throws \Doctrine\DBAL\Driver\Exception
      */
     public function execute($data)
     {
         $user = $this->userExists((int)$data->user_id);
         if (!$user) {
-            throw new \Exception("Usuário não existe");
+            throw new Exception("Usuário não existe");
         }
         $wallet = new WalletDto($data->user_id, (float)$data->value);
         return (new StoreWallet($this->repository))->execute($wallet);
@@ -63,7 +65,7 @@ class WalletService
     {
         $user = $this->userExists((int)$data->user_id);
         if (!$user) {
-            throw new \Exception("Usuário não existe");
+            throw new Exception("Usuário não existe");
         }
         $wallet = new WalletDto($data->user_id, 0.0);
         return (new StoreWallet($this->repository))->getBalance($wallet);

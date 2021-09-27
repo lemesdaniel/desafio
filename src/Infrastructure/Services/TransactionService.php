@@ -96,8 +96,8 @@ class TransactionService
         if (!$this->payee) {
             throw new Exception("Usuário beneficiário não foi encontrado", 422);
         }
-        if (strlen($this->payee['document']) == 11) {
-            throw new Exception("Usuário beneficiário precisa ser um lojista (possuir CNPJ)", 422);
+        if (strlen($this->payer['document']) != 11) {
+            throw new Exception("Lojistas podem apenas receber transferências, não podem fazer", 422);
         }
         if ($this->value <= 0.0) {
             throw new Exception("Valor da transação precisa ser maior que zero.", 422);

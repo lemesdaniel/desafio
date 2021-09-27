@@ -4,6 +4,7 @@
 2. Banco de dados.
 3. Symfony para prover rotas e a injeção de dependência.
 4. Doctrine apenas pela integração com symfony e então foi utilizado PDO
+5. Para testes foi utilizado o [Pest](https://pestphp.com/)
 
 > As escolhas se basearam na simplicidade pra que o foco ficasse no código e não na tecnologia utilizada.
 > Algumas tecnologias eu nunca havia utilizado, como Symfony 5 e Doctrine
@@ -13,6 +14,14 @@
 Nessa instruções presumisse que já se tenha o docker instalado.
 
 Se você estiver utilizando linux utilize o comando _docker-compose up -d_ para subir a aplicação e acesse através da url http://localhost:9000.
+
+> Foi  criado um arquivo Makefile com alguns atalhos
+> 1. make build 
+> 2. make up
+> 3. make down
+> 4. make pest
+> 5. make infection
+
 
 Para realizar um cadastro podemos usar o script shell abaixo
 
@@ -60,3 +69,7 @@ curl --request POST \
 }'
 ```
 
+## Melhorias 
+- Ampliar testes
+- Utilizar banco de dados de teste e fazer teste de integração
+- Criar exceptions personalizadas e não utilizar o retorno das mensagens no testes

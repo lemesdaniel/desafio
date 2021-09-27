@@ -6,7 +6,7 @@ namespace App\Controller;
 
 use App\Infrastructure\Repositories\sqlite\UserRepositorySqlite;
 use App\Infrastructure\Repositories\sqlite\WalletRepositorySqlite;
-use App\Infrastructure\Services\WalletService;
+use App\Domain\Exception\WalletService;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
