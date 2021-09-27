@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Domain\Entities;
 
-use App\Domain\Contracts\HashPasswordInterface;
 use App\Domain\Document;
 use App\Domain\Email;
 
@@ -120,6 +119,7 @@ class User
     }
 
     /**
+     * @param $id
      * @param $name
      * @param $email
      * @param $document
@@ -147,6 +147,7 @@ class User
 
     /**
      * @param $id
+     * @return \App\Domain\Entities\User
      */
     public function setId($id): User
     {

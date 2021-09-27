@@ -397,6 +397,12 @@
     "symfony/process": {
         "version": "v5.3.7"
     },
+    "symfony/property-access": {
+        "version": "v5.3.7"
+    },
+    "symfony/property-info": {
+        "version": "v5.3.7"
+    },
     "symfony/proxy-manager-bridge": {
         "version": "v5.3.4"
     },
@@ -414,6 +420,9 @@
         ]
     },
     "symfony/runtime": {
+        "version": "v5.3.4"
+    },
+    "symfony/serializer": {
         "version": "v5.3.4"
     },
     "symfony/service-contracts": {

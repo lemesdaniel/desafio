@@ -3,24 +3,20 @@
 namespace App\Domain\Contracts;
 
 use App\Domain\Entities\User;
+use App\Domain\Entities\Wallet;
 
 interface WalletRepository
 {
-
     /**
-     * @param User $user
+     * @param int $user
+     * @return array
      */
-    public function __construct(User $user);
-
-    /**
-     * @return float
-     */
-    public function getBalance(): float;
+    public function getBalance(int $user): array;
 
     /**
      * @param float $value
-     * @return float
+     * @return array
      */
-    public function addFunds(float $value):float;
+    public function addFunds(Wallet $wallet): array;
 
 }

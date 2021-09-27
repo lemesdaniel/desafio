@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Infrastructure\Repositories\sqlite\UserRepositorySqlite;
 use App\Infrastructure\Repositories\sqlite\WalletRepositorySqlite;
 use App\Infrastructure\Services\WalletService;
 use Doctrine\DBAL\Connection;
@@ -20,7 +21,7 @@ class WalletController extends BaseController
     }
 
     /**
-     * @Route("/wallet",methods={"POST"})
+     * @Route("/wallet", methods={"POST"})
      * @param Request $request
      * @return JsonResponse
      */
@@ -28,8 +29,9 @@ class WalletController extends BaseController
     {
         $data = $this->getJsonData($request);
         $repository = new WalletRepositorySqlite($this->connection);
+        $userRepository = new UserRepositorySqlite($this->connection);
         return $this->json(
-            (new WalletService($repository)
+            (new WalletService($repository, $userRepository)
             )->execute($data));
     }
 

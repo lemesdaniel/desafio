@@ -62,11 +62,15 @@ class UserRepositorySqlite implements UserRepository
      */
     public function find(int $id): array
     {
-        $sql = 'SELECT id, name, document, email FROM users WHERE id = ?';
+        $sql = 'SELECT id, name, document, email FROM users WHERE id = ? LIMIT 1';
         $stmt = $this->connection->prepare($sql);
         $stmt->bindValue(1, $id);
         $resultSet = $stmt->executeQuery();
         $user = $resultSet->fetchAssociative();
+
+        if(!$user){
+            return [];
+        }
 
         return (new User)
             ->load($user['id'], $user['name'], $user['email'], $user['document'])

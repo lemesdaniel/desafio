@@ -8,7 +8,7 @@ services:
     build: ./
     ports:
       - "9000:9000"
-    command: php -S 0.0.0.0:9000 -t public/
+    command: php -dxdebug.remote_enable=1 -dxdebug.remote_mode=req -dxdebug.remote_port=10080 -dxdebug.remote_host=0.0.0.0:9000 -S 0.0.0.0:9000 -t public/
     volumes:
       - ./:/var/www/html
 
