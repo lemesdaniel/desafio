@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 
@@ -14,5 +15,5 @@ interface Notification
     /**
      * @return bool
      */
-    public function send():bool;
+    public function send(): bool;
 }

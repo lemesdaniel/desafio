@@ -1,11 +1,11 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
-
 
 class DefaultController
 {
@@ -15,12 +15,10 @@ class DefaultController
      */
     public function index(): JsonResponse
     {
-
         return new JsonResponse([
             'title' => 'Bem vindo ao desafio!!',
             'version' => 1,
         ]);
-
     }
 
 

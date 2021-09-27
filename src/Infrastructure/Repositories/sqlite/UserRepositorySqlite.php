@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Infrastructure\Repositories\sqlite;
@@ -22,6 +23,9 @@ class UserRepositorySqlite implements UserRepository
 
     /**
      * @param User $user
+     * @return array
+     * @throws Exception
+     * @throws \Doctrine\DBAL\Driver\Exception
      */
     public function save(User $user): array
     {
@@ -68,7 +72,7 @@ class UserRepositorySqlite implements UserRepository
         $resultSet = $stmt->executeQuery();
         $user = $resultSet->fetchAssociative();
 
-        if(!$user){
+        if (!$user) {
             return [];
         }
 

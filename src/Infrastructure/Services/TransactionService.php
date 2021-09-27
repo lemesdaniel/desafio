@@ -1,16 +1,15 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Infrastructure\Services;
 
-use App\Application\Wallet\StoreWallet;
-use App\Application\Wallet\WalletDto;
+use App\Domain\Contracts\AuthorizingService;
+use App\Domain\Contracts\Notification;
 use App\Domain\Contracts\TransactionRepository;
 use App\Domain\Contracts\UserRepository;
 use App\Domain\Contracts\WalletRepository;
 use App\Domain\Entities\Wallet;
-use Doctrine\DBAL\Driver\Exception;
-
 
 class TransactionService
 {
@@ -30,39 +29,59 @@ class TransactionService
     private array $payer;
     private array $payee;
     private float $value;
+    private AuthorizingService $authorizingService;
+    /**
+     * @var \App\Domain\Contracts\Notification
+     */
+    private Notification $notification;
 
     /**
      * @param \App\Domain\Contracts\TransactionRepository $repository
      * @param \App\Domain\Contracts\WalletRepository $walletRepository
      * @param \App\Domain\Contracts\UserRepository $userRepository
      */
-    public function __construct(TransactionRepository $repository, WalletRepository $walletRepository, UserRepository $userRepository)
-    {
+    public function __construct(
+        TransactionRepository $repository,
+        WalletRepository $walletRepository,
+        UserRepository $userRepository,
+        AuthorizingService $authorizingService,
+        Notification $notification
+    ) {
         $this->repository = $repository;
         $this->walletRepository = $walletRepository;
         $this->userRepository = $userRepository;
+        $this->authorizingService = $authorizingService;
+        $this->notification = $notification;
     }
 
     /**
-     * @throws \Exception
+     * @param $data
      * @throws \Doctrine\DBAL\Driver\Exception
+     * @throws \Doctrine\DBAL\Exception
+     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
     public function execute($data)
     {
         $this->payer = $this->userRepository->find((int)$data->payer ?? null);
         $this->payee = $this->userRepository->find((int)$data->payee ?? null);
-        $this->value = (float) $data->value ?? 0.0;
+        $this->value = (float)$data->value ?? 0.0;
         $this->validate();
         $this->checkBalance();
         $this->cashOut();
         $this->cashIn();
         $this->registerTransaction();
+        $this->authorizingService();
     }
 
     /**
      * @throws \Exception
      */
-    public function validate(){
+    public function validate()
+    {
         if (!$this->payer) {
             throw new \Exception("Usuário pagador não foi encontrado", 422);
         }
@@ -72,19 +91,17 @@ class TransactionService
         if (strlen($this->payee['document']) == 11) {
             throw new \Exception("Usuário beneficiário precisa ser um lojista (possuir CNPJ)", 422);
         }
-        if ($this->value <= 0.0 )
-        {
+        if ($this->value <= 0.0) {
             throw new \Exception("Valor da transação precisa ser maior que zero.", 422);
         }
     }
 
     public function checkBalance()
     {
-        $balance = $this->walletRepository->getBalance((int) $this->payer['id']);
-        if((float) $balance['balance'] < $this->value ){
+        $balance = $this->walletRepository->getBalance((int)$this->payer['id']);
+        if ((float)$balance['balance'] < $this->value) {
             throw new \Exception("Saldo insuficiente", 422);
         }
-
     }
 
     /**
@@ -109,12 +126,20 @@ class TransactionService
 
     private function registerTransaction()
     {
-        $this->repository->execute((int) $this->payer['id'], (int) $this->payee['id'], $this->value);
+        $this->repository->execute((int)$this->payer['id'], (int)$this->payee['id'], $this->value);
     }
 
-    private function authorizingService(){
-        $httpClient = HttpClient::create();
-        $response = $httpClient->request('GET', 'https://api.github.com/repos/symfony/symfony-docs');
+    /**
+     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     * @throws \Exception
+     */
+    private function authorizingService(): void
+    {
+        $this->authorizingService->execute();
     }
 
 }

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Domain;
@@ -35,7 +36,7 @@ class Document
      */
     private function checkIfHasOnlyOneCharacter(): self
     {
-        if(count(array_count_values(str_split($this->document))) == 1){
+        if (count(array_count_values(str_split($this->document))) == 1) {
             throw new InvalidArgumentException("O documento não é um CPF ou CNPJ válido");
         }
         return $this;
@@ -90,11 +91,15 @@ class Document
     private function cnpjIsValid(): bool
     {
         $b = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
-        for ($i = 0, $n = 0; $i < 12; $n += $this->document[$i] * $b[++$i]) ;
+        for ($i = 0, $n = 0; $i < 12; $n += $this->document[$i] * $b[++$i]) {
+            ;
+        }
         if ($this->document[12] != ((($n %= 11) < 2) ? 0 : 11 - $n)) {
             throw new InvalidArgumentException("O documento não é um CNPJ válido");
         }
-        for ($i = 0, $n = 0; $i <= 12; $n += $this->document[$i] * $b[$i++]) ;
+        for ($i = 0, $n = 0; $i <= 12; $n += $this->document[$i] * $b[$i++]) {
+            ;
+        }
         if ($this->document[13] != ((($n %= 11) < 2) ? 0 : 11 - $n)) {
             throw new InvalidArgumentException("O documento não é um CNPJ válido");
         }

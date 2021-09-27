@@ -14,7 +14,7 @@ interface WalletRepository
     public function getBalance(int $user): array;
 
     /**
-     * @param \App\Domain\Entities\Wallet $wallet
+     * @param Wallet $wallet
      * @return array
      */
     public function cashIn(Wallet $wallet): array;

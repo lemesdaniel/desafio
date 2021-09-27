@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Infrastructure\Repositories\sqlite;
@@ -7,12 +8,13 @@ namespace App\Infrastructure\Repositories\sqlite;
 use App\Domain\Contracts\TransactionRepository;
 use App\Domain\Entities\User;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception;
 
 class TransactionRepositorySqlite implements TransactionRepository
 {
 
     /**
-     * @var \Doctrine\DBAL\Connection
+     * @var Connection
      */
     private Connection $connection;
 
@@ -22,6 +24,14 @@ class TransactionRepositorySqlite implements TransactionRepository
     }
 
 
+    /**
+     * @param int $payer_id
+     * @param int $payee_id
+     * @param float $value
+     * @return void
+     * @throws \Doctrine\DBAL\Driver\Exception
+     * @throws Exception
+     */
     public function execute(int $payer_id, int $payee_id, float $value)
     {
         $sql = 'INSERT INTO transactions (payer_id, payee_id, value) VALUES

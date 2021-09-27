@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Infrastructure\Services;
@@ -33,13 +34,12 @@ class WalletService
      */
     public function execute($data)
     {
-        $user = $this->userExists((int) $data->user_id);
-        if(!$user){
+        $user = $this->userExists((int)$data->user_id);
+        if (!$user) {
             throw new \Exception("Usuário não existe");
         }
-        $wallet = new WalletDto($data->user_id, (float) $data->value);
+        $wallet = new WalletDto($data->user_id, (float)$data->value);
         return (new StoreWallet($this->repository))->execute($wallet);
-
     }
 
     /**
@@ -50,7 +50,7 @@ class WalletService
      */
     public function userExists($id): bool
     {
-        return (bool) $this->userRepository->find($id);
+        return (bool)$this->userRepository->find($id);
     }
 
     /**
@@ -61,12 +61,11 @@ class WalletService
      */
     public function getBalance($data): array
     {
-        $user = $this->userExists((int) $data->user_id);
-        if(!$user){
+        $user = $this->userExists((int)$data->user_id);
+        if (!$user) {
             throw new \Exception("Usuário não existe");
         }
         $wallet = new WalletDto($data->user_id, 0.0);
         return (new StoreWallet($this->repository))->getBalance($wallet);
-
     }
 }

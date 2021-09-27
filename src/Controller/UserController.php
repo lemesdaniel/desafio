@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller;
@@ -29,7 +30,8 @@ class UserController extends BaseController
         $repository = new UserRepositorySqlite($this->connection);
         return $this->json(
             (new UserService($repository)
-            )->execute($data));
+            )->execute($data)
+        );
     }
 
     /**

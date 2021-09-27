@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Domain\Entities;
@@ -147,7 +148,7 @@ class User
 
     /**
      * @param $id
-     * @return \App\Domain\Entities\User
+     * @return User
      */
     public function setId($id): User
     {

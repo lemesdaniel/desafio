@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Domain\Entities;
@@ -11,7 +12,7 @@ class Wallet
     /**
      * @param $user_id
      * @param $value
-     * @return \App\Domain\Entities\Wallet
+     * @return Wallet
      */
     public function create($user_id, $value): Wallet
     {
@@ -26,7 +27,7 @@ class Wallet
      */
     public function setUserId($user_id): Wallet
     {
-        $this->user_id = (int) $user_id;
+        $this->user_id = (int)$user_id;
         return $this;
     }
 
@@ -36,7 +37,7 @@ class Wallet
      */
     public function setBalance($balance): Wallet
     {
-        $this->balance = (float) $balance;
+        $this->balance = (float)$balance;
         return $this;
     }
 

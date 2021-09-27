@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Infrastructure\Repositories\sqlite;
@@ -6,6 +7,7 @@ namespace App\Infrastructure\Repositories\sqlite;
 use App\Domain\Contracts\WalletRepository;
 use App\Domain\Entities\Wallet;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception;
 
 class WalletRepositorySqlite implements WalletRepository
 {
@@ -23,7 +25,7 @@ class WalletRepositorySqlite implements WalletRepository
      * @param int $user
      * @return array
      * @throws \Doctrine\DBAL\Driver\Exception
-     * @throws \Doctrine\DBAL\Exception
+     * @throws Exception
      */
     public function getBalance(int $user): array
     {
@@ -33,7 +35,7 @@ class WalletRepositorySqlite implements WalletRepository
         $resultSet = $stmt->executeQuery();
         $wallet = $resultSet->fetchAssociative();
 
-        if(!$wallet){
+        if (!$wallet) {
             return [];
         }
 
@@ -41,7 +43,7 @@ class WalletRepositorySqlite implements WalletRepository
     }
 
     /**
-     * @throws \Doctrine\DBAL\Exception
+     * @throws Exception
      * @throws \Doctrine\DBAL\Driver\Exception
      */
     public function cashIn(Wallet $wallet): array
@@ -57,7 +59,7 @@ class WalletRepositorySqlite implements WalletRepository
 
     /**
      * @throws \Doctrine\DBAL\Driver\Exception
-     * @throws \Doctrine\DBAL\Exception
+     * @throws Exception
      */
     public function cashOut(Wallet $wallet): array
     {
@@ -72,7 +74,7 @@ class WalletRepositorySqlite implements WalletRepository
 
     /**
      * @throws \Doctrine\DBAL\Driver\Exception
-     * @throws \Doctrine\DBAL\Exception
+     * @throws Exception
      */
     private function checkIfExistsWallet(Wallet $wallet): void
     {

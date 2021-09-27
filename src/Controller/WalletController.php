@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller;
@@ -43,7 +44,8 @@ class WalletController extends BaseController
         $data = $this->getJsonData($request);
         return $this->json(
             (new WalletService($this->repository, $this->userRepository)
-            )->execute($data));
+            )->execute($data)
+        );
     }
 
     /**
@@ -57,7 +59,8 @@ class WalletController extends BaseController
         $data = $this->getJsonData($request);
         return $this->json(
             (new WalletService($this->repository, $this->userRepository)
-            )->getBalance($data));
+            )->getBalance($data)
+        );
     }
 
 }

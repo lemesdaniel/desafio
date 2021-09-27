@@ -16,7 +16,7 @@ Se você estiver utilizando linux utilize o comando _docker-compose up -d_ para 
 
 Para realizar um cadastro podemos usar o script shell abaixo
 
-> Existe um arquivo do [insomnia](https://insomnia.rest/download) dentro da pasta (doc/insomnia)[doc/insomnia] 
+> Existe um arquivo do [insomnia](https://insomnia.rest/download) dentro da pasta [doc/insomnia](https://github.com/lemesdaniel/desafio/tree/main/doc/insomnia) 
 
 ``` 
 curl --request POST \
@@ -59,3 +59,4 @@ curl --request POST \
 "value": 189.99
 }'
 ```
+

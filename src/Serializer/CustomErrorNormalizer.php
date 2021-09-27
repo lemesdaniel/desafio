@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Serializer;
@@ -12,7 +13,7 @@ class CustomErrorNormalizer implements NormalizerInterface
     {
         return [
             'content' => 'An error.',
-            'exception'=> [
+            'exception' => [
                 'message' => $exception->getMessage(),
                 'code' => $exception->getStatusCode(),
             ],

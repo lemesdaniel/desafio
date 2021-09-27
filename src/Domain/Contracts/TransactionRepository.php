@@ -2,12 +2,8 @@
 
 namespace App\Domain\Contracts;
 
-use App\Domain\Entities\User;
-
 interface TransactionRepository
 {
-
-
     /**
      * @return mixed
      */
