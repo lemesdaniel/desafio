@@ -13,11 +13,23 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class WalletController extends BaseController
 {
-    private Connection $connection;
+    /**
+     * @var \App\Infrastructure\Repositories\sqlite\WalletRepositorySqlite
+     */
+    private WalletRepositorySqlite $repository;
+    /**
+     * @var \App\Infrastructure\Repositories\sqlite\UserRepositorySqlite
+     */
+    private UserRepositorySqlite $userRepository;
 
+    /**
+     * @param \Doctrine\DBAL\Connection $connection
+     */
     public function __construct(Connection $connection)
     {
-        $this->connection = $connection;
+        parent::__construct($connection);
+        $this->repository = new WalletRepositorySqlite($this->connection);
+        $this->userRepository = new UserRepositorySqlite($this->connection);
     }
 
     /**
@@ -29,10 +41,8 @@ class WalletController extends BaseController
     public function addFound(Request $request): JsonResponse
     {
         $data = $this->getJsonData($request);
-        $repository = new WalletRepositorySqlite($this->connection);
-        $userRepository = new UserRepositorySqlite($this->connection);
         return $this->json(
-            (new WalletService($repository, $userRepository)
+            (new WalletService($this->repository, $this->userRepository)
             )->execute($data));
     }
 
@@ -45,10 +55,8 @@ class WalletController extends BaseController
     public function getBalance(Request $request): JsonResponse
     {
         $data = $this->getJsonData($request);
-        $repository = new WalletRepositorySqlite($this->connection);
-        $userRepository = new UserRepositorySqlite($this->connection);
         return $this->json(
-            (new WalletService($repository, $userRepository)
+            (new WalletService($this->repository, $this->userRepository)
             )->getBalance($data));
     }
 

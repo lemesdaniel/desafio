@@ -11,7 +11,7 @@ class CustomErrorNormalizer implements NormalizerInterface
     public function normalize($exception, string $format = null, array $context = []): array
     {
         return [
-            'content' => 'This is my custom problem normalizer.',
+            'content' => 'An error.',
             'exception'=> [
                 'message' => $exception->getMessage(),
                 'code' => $exception->getStatusCode(),
