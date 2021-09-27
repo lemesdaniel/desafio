@@ -10,20 +10,26 @@ use App\Domain\Contracts\TransactionRepository;
 use App\Domain\Contracts\UserRepository;
 use App\Domain\Contracts\WalletRepository;
 use App\Domain\Entities\Wallet;
+use Exception;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class TransactionService
 {
 
     /**
-     * @var \App\Domain\Contracts\TransactionRepository
+     * @var TransactionRepository
      */
     private TransactionRepository $repository;
     /**
-     * @var \App\Domain\Contracts\WalletRepository
+     * @var WalletRepository
      */
     private WalletRepository $walletRepository;
     /**
-     * @var \App\Domain\Contracts\UserRepository
+     * @var UserRepository
      */
     private UserRepository $userRepository;
     private array $payer;
@@ -31,14 +37,14 @@ class TransactionService
     private float $value;
     private AuthorizingService $authorizingService;
     /**
-     * @var \App\Domain\Contracts\Notification
+     * @var Notification
      */
     private Notification $notification;
 
     /**
-     * @param \App\Domain\Contracts\TransactionRepository $repository
-     * @param \App\Domain\Contracts\WalletRepository $walletRepository
-     * @param \App\Domain\Contracts\UserRepository $userRepository
+     * @param TransactionRepository $repository
+     * @param WalletRepository $walletRepository
+     * @param UserRepository $userRepository
      */
     public function __construct(
         TransactionRepository $repository,
@@ -58,11 +64,11 @@ class TransactionService
      * @param $data
      * @throws \Doctrine\DBAL\Driver\Exception
      * @throws \Doctrine\DBAL\Exception
-     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     * @throws ClientExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
      */
     public function execute($data)
     {
@@ -75,24 +81,26 @@ class TransactionService
         $this->cashIn();
         $this->registerTransaction();
         $this->authorizingService();
+        $this->notificationService($this->payer);
+        $this->notificationService($this->payee);
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function validate()
     {
         if (!$this->payer) {
-            throw new \Exception("Usuário pagador não foi encontrado", 422);
+            throw new Exception("Usuário pagador não foi encontrado", 422);
         }
         if (!$this->payee) {
-            throw new \Exception("Usuário beneficiário não foi encontrado", 422);
+            throw new Exception("Usuário beneficiário não foi encontrado", 422);
         }
         if (strlen($this->payee['document']) == 11) {
-            throw new \Exception("Usuário beneficiário precisa ser um lojista (possuir CNPJ)", 422);
+            throw new Exception("Usuário beneficiário precisa ser um lojista (possuir CNPJ)", 422);
         }
         if ($this->value <= 0.0) {
-            throw new \Exception("Valor da transação precisa ser maior que zero.", 422);
+            throw new Exception("Valor da transação precisa ser maior que zero.", 422);
         }
     }
 
@@ -100,7 +108,7 @@ class TransactionService
     {
         $balance = $this->walletRepository->getBalance((int)$this->payer['id']);
         if ((float)$balance['balance'] < $this->value) {
-            throw new \Exception("Saldo insuficiente", 422);
+            throw new Exception("Saldo insuficiente", 422);
         }
     }
 
@@ -130,16 +138,22 @@ class TransactionService
     }
 
     /**
-     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
-     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
-     * @throws \Exception
+     * @throws ClientExceptionInterface
+     * @throws DecodingExceptionInterface
+     * @throws RedirectionExceptionInterface
+     * @throws ServerExceptionInterface
+     * @throws TransportExceptionInterface
+     * @throws Exception
      */
     private function authorizingService(): void
     {
         $this->authorizingService->execute();
     }
+
+    private function notificationService($user): void
+    {
+        $this->notification->execute($user);
+    }
+
 
 }
